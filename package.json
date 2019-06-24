@@ -14,7 +14,8 @@
     "seedRoles": "knex seed:make 01-roles",
     "runseedRoles": "knex seed:run 01-roles",
     "tableUsers": "knex migrate:make usersTable",
-    "seedUsers": "knex seed:make 01-users"
+    "seedUsers": "knex seed:make 01-users",
+    "runseedUsers": "knex seed:run 01-users"
   },
   "repository": {
     "type": "git",
