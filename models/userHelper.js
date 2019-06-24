@@ -16,11 +16,20 @@ const userSchema = Joi.object().keys({
   role_id: Joi.number.integer()
 });
 
+//register a user
+const registerUser = async user => {
+  const [id] = await db("users").insert(user);
+  const query = await db("users").where("id", id).first;
+  return query;
+};
+
+//get all users fron database
 const getAllUsers = async () => {
   return await db("users");
 };
 
 module.exports = {
   userSchema,
-  getAllUsers
+  getAllUsers,
+  registerUser
 };
