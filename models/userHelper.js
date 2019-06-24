@@ -50,5 +50,6 @@ module.exports = {
   userSchema,
   loginSchema,
   getAllUsers,
-  registerUser
+  registerUser,
+  findBy
 };
