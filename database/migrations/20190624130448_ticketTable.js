@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  knex.schema.createTable("tickets", table => {
+  return knex.schema.createTable("tickets", table => {
     table.increments();
     table.string("title", 200).notNullable();
     table.text("description").notNullable();
@@ -17,6 +17,13 @@ exports.up = function(knex, Promise) {
       .unsigned()
       .references("id")
       .inTable("users")
+      .onDelete("CASCADE")
+      .onUpdate("CASCADE");
+    table
+      .integer("category_id")
+      .unsigned()
+      .references("id")
+      .inTable("categories")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
     table.timestamps(true, true);
