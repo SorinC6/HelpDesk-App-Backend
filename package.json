@@ -18,7 +18,10 @@
     "runseedUsers": "knex seed:run 01-users",
     "tableTicket": "knex migrate:make ticketTable",
     "seedTickets": "knex seed:make 01-tickets",
-    "runseedTickets": "knex seed:run 01-tickets"
+    "runseedTickets": "knex seed:run 01-tickets",
+    "tableCategory": "knex migrate:make ticketCategories",
+    "seedCategory": "knex seed:make 01-categories",
+    "runseedCategory": "knex seed:run 01-categories"
   },
   "repository": {
     "type": "git",
