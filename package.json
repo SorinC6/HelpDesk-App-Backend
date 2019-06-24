@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "reload": "knex migrate:rollback && knex migrate:latest && knex seed:run && yarn develop",
+    "reload": "knex migrate:rollback && knex migrate:latest && knex seed:run ",
     "initdb": "knex init",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
