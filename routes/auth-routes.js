@@ -1,15 +1,32 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
-const Joi = require("joi");
 const dbHelpers = require("../models/userHelper");
+const Joi = require("joi");
 
 router.post("/register", async (req, res) => {
   const creds = req.body;
-  creds.password = habcrypt.hashSync(creds.password, 12);
+  creds.password = bcrypt.hashSync(creds.password, 12);
 
-  const validBody = await dbHelpers.userSchema.validate(creds);
+  const validBody = Joi.validate(creds, dbHelpers.userSchema);
 
-  if(validBody){
-      
+  if (validBody.error === null) {
+    try {
+      const result = await dbHelpers.registerUser(creds);
+      res.status(200).json({
+        id: result.id,
+        email: result.email,
+        username: result.username,
+        role: result.role_id,
+        message: `User: ${result.username} was registered succesfully`
+      });
+    } catch (error) {
+      res.status(500).json({ error: "error trying to register a user" });
+    }
+  } else {
+    res.status(401).json({
+      message: "please provide correct email , username and password"
+    });
   }
 });
+
+module.exports = router;
