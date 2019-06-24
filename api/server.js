@@ -8,4 +8,9 @@ const cors = require("cors");
 const server = expresss();
 server.use(cors());
 server.use(helmet());
-server.use(express.json());
+server.use(expresss.json());
+
+//use the router
+
+//export server
+module.exports = server;
