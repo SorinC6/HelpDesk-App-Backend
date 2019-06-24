@@ -1,0 +1,1 @@
+require("dotenv").config();  //for loading from .env file
