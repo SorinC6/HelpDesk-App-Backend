@@ -12,6 +12,7 @@
     "rollback": "knex migrate:rollback",
     "tableRoles": "knex migrate:make tableRoles",
     "seedRoles": "knex seed:make 01-roles",
+    "runseedRoles": "knex seed:run 01-roles",
     "tableUsers": "knex migrate:make usersTable",
     "seedUsers": "knex seed:make 01-users"
   },
