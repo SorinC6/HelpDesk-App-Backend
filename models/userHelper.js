@@ -15,6 +15,16 @@ const userSchema = Joi.object().keys({
   role_id: Joi.number().integer()
 });
 
+const loginSchema = Joi.object().keys({
+  username: Joi.string()
+    .min(1)
+    .max(30)
+    .required(),
+  password: Joi.string()
+    .required()
+    .min(3)
+});
+
 //register a user
 const registerUser = async user => {
   const [id] = await db("users").insert(user);
@@ -25,7 +35,11 @@ const registerUser = async user => {
 };
 
 //filer users based of a field
-const filter = async query => await db("users").where(query);
+const findBy = async filter => {
+  return await db("users")
+    .where(filter)
+    .first();
+};
 
 //get all users fron database
 const getAllUsers = async () => {
@@ -34,6 +48,7 @@ const getAllUsers = async () => {
 
 module.exports = {
   userSchema,
+  loginSchema,
   getAllUsers,
   registerUser
 };
