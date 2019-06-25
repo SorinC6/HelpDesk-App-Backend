@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const bcrypt = require("bcryptjs");
 const responseStatus = require("../config/responseStatuses");
 const restricted = require("../middleware/restrictedRoute");
 const validRole = require("../middleware/roleCheck");
