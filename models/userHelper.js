@@ -46,10 +46,18 @@ const getAllUsers = async () => {
   return await db("users");
 };
 
+//delete a user
+const deleteUserById = async id => {
+  return await db("users")
+    .where({ id })
+    .del();
+};
+
 module.exports = {
   userSchema,
   loginSchema,
   getAllUsers,
   registerUser,
-  findBy
+  findBy,
+  deleteUserById
 };
