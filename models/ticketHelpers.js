@@ -11,3 +11,18 @@ const ticketSchema = Joi.object().keys({
     .required(),
   category_id: Joi.number().integer()
 });
+
+const getTicket = async id => {
+  if (id) {
+    return await db(tickets).where({ id });
+  }
+
+  const tickets = await db("tickets");
+  
+  return;
+};
+
+module.exports = {
+  ticketSchema,
+  getTicket
+};
