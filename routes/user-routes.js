@@ -1,14 +1,15 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
+const responseStatus = require("../config/responseStatuses");
 
 const dbHelpers = require("../models/userHelper");
 
-router.get("/users", async (req, res) => {
+router.get("/users", async (req, res, next) => {
   try {
-    const users = await dbHelpers.getAllUsers();
-    res.status(200).json({ users });
+    const user = await dbHelpers.getAllUsers();
+    res.status(responseStatus.successful).json({ users });
   } catch (error) {
-    res.status(500).json({ error: "error trying to get the users" });
+    next(responseStatus.serverError);
   }
 });
 

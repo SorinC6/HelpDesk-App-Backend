@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const dbHelpers = require("../models/userHelper");
 const Joi = require("joi");
 const generateToken = require("../middleware/generateToken");
+const responseStatus = require("../config/responseStatuses");
 
 router.post("/register", async (req, res) => {
   const creds = req.body;
@@ -13,7 +14,7 @@ router.post("/register", async (req, res) => {
   if (validBody.error === null) {
     try {
       const result = await dbHelpers.registerUser(creds);
-      res.status(200).json({
+      res.status(responseStatus.successful).json({
         id: result.id,
         email: result.email,
         username: result.username,
@@ -21,16 +22,14 @@ router.post("/register", async (req, res) => {
         message: `User: ${result.username} was registered succesfully`
       });
     } catch (error) {
-      res.status(500).json({ error: "error trying to register a user" });
+      next(responseStatus.serverError);
     }
   } else {
-    res.status(401).json({
-      message: "please provide correct email , username and password"
-    });
+    next(responseStatus.badCredentials);
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
   const valid = Joi.validate(req.body, dbHelpers.loginSchema);
 
@@ -39,20 +38,20 @@ router.post("/login", async (req, res) => {
       const user = await dbHelpers.findBy({ username });
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
-        res.status(200).json({
+        res.status(responseStatus.successful).json({
           message: `Welcome ${user.username} !`,
           token: token,
           role: user.role_id,
           id: user.id
         });
       } else {
-        res.status(401).json({ message: "invalid Credentials" });
+        next(responseStatus.badCredentials);
       }
     } catch (error) {
-      res.status(500).json({ error: "error trying to login the user" });
+      next(responseStatus.serverError);
     }
   } else {
-    res.status(400).json({ message: "please provide username and password" });
+    next(responseStatus.badRequest);
   }
 });
 
