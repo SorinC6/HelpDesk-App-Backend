@@ -20,4 +20,19 @@ router.get(
   }
 );
 
+router.post("/tickets", restricted, async (req, res, next) => {
+  const ticket = req.body;
+  try {
+    const [id] = await dbHelpers.addTicket(ticket);
+    if (id) {
+      const newTicket = await dbHelpers.getTicket(id);
+      res.status(responseStatus.successful).json(newTicket);
+    } else {
+      next(responseStatus.notFound);
+    }
+  } catch (error) {
+    next(responseStatus.serverError);
+  }
+});
+
 module.exports = router;

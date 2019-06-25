@@ -17,7 +17,9 @@ const ticketSchema = Joi.object().keys({
 const getTicket = async id => {
   let query = await db("tickets");
 
-  if (id) query = query.where({ id });
+  if (id) {
+    return await db("tickets").where({ id });
+  }
 
   //   let tickets = await db("tickets as t")
   //     .join("users", "t.student_id", "users.id")
@@ -41,7 +43,12 @@ const getTicket = async id => {
   return tickets;
 };
 
+const addTicket = async ticket => {
+  return await db("tickets").insert(ticket);
+};
+
 module.exports = {
   ticketSchema,
-  getTicket
+  getTicket,
+  addTicket
 };
