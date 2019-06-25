@@ -1,15 +1,39 @@
 const router = require("express").Router();
-const bcrypt = require("bcryptjs");
+const responseStatus = require("../config/responseStatuses");
+const restricted = require("../middleware/restrictedRoute");
+const validRole = require("../middleware/roleCheck");
 
 const dbHelpers = require("../models/userHelper");
 
-router.get("/users", async (req, res) => {
+router.get("/users", restricted, validRole([3, 2]), async (req, res, next) => {
   try {
     const users = await dbHelpers.getAllUsers();
-    res.status(200).json({ users });
+    res.status(responseStatus.successful).json({ users });
   } catch (error) {
-    res.status(500).json({ error: "error trying to get the users" });
+    next(responseStatus.serverError);
   }
 });
+
+router.delete(
+  "/users/:id",
+  restricted,
+  validRole([3]),
+  async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+      const result = await dbHelpers.deleteUserById(id);
+      if (result === 1) {
+        res.status(responseStatus.successful).json({
+          message: "Delete user Sucesfully"
+        });
+      } else {
+        next(responseStatus.notFound);
+      }
+    } catch (error) {
+      next(responseStatus.serverError);
+    }
+  }
+);
 
 module.exports = router;

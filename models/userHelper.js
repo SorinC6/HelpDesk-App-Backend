@@ -25,6 +25,25 @@ const loginSchema = Joi.object().keys({
     .min(3)
 });
 
+//get a student by id
+const getStudentById = ticketId => {
+  const query = db("users")
+    .join("tickets as t", "t.student_id", "users.id")
+    .where("t.id", ticketId)
+    .select("username")
+    .first();
+  return query;
+};
+
+const getHelperbyId = helperId => {
+  const query = db("users")
+    .join("tickets as t", "t.helper_id", "users.id")
+    .where("t.id", helperId)
+    .select("username")
+    .first();
+  return query;
+};
+
 //register a user
 const registerUser = async user => {
   const [id] = await db("users").insert(user);
@@ -43,12 +62,31 @@ const findBy = async filter => {
 
 //get all users fron database
 const getAllUsers = async () => {
-  return await db("users");
+  return await db("users")
+    .join("roles", "users.role_id", "roles.id")
+    .select(
+      "users.id",
+      "users.email",
+      "users.username",
+      "users.password",
+      "roles.name as role"
+    );
+};
+
+//delete a user
+const deleteUserById = async id => {
+  return await db("users")
+    .where({ id })
+    .del();
 };
 
 module.exports = {
   userSchema,
   loginSchema,
   getAllUsers,
-  registerUser
+  registerUser,
+  findBy,
+  deleteUserById,
+  getHelperbyId,
+  getStudentById
 };
