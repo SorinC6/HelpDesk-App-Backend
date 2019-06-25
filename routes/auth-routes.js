@@ -4,14 +4,15 @@ const dbHelpers = require("../models/userHelper");
 const Joi = require("joi");
 const generateToken = require("../middleware/generateToken");
 const responseStatus = require("../config/responseStatuses");
+const schemaValid = require("../middleware/validate");
 
-router.post("/register", async (req, res) => {
-  const creds = req.body;
-  creds.password = bcrypt.hashSync(creds.password, 12);
+router.post(
+  "/register",
+  schemaValid(dbHelpers.userSchema),
+  async (req, res) => {
+    const creds = req.body;
+    creds.password = bcrypt.hashSync(creds.password, 12);
 
-  const validBody = Joi.validate(creds, dbHelpers.userSchema);
-
-  if (validBody.error === null) {
     try {
       const result = await dbHelpers.registerUser(creds);
       res.status(responseStatus.successful).json({
@@ -24,16 +25,16 @@ router.post("/register", async (req, res) => {
     } catch (error) {
       next(responseStatus.serverError);
     }
-  } else {
-    next(responseStatus.badCredentials);
   }
-});
+);
 
-router.post("/login", async (req, res, next) => {
-  const { username, password } = req.body;
-  const valid = Joi.validate(req.body, dbHelpers.loginSchema);
+router.post(
+  "/login",
+  schemaValid(dbHelpers.loginSchema),
+  async (req, res, next) => {
+    //
+    const { username, password } = req.body;
 
-  if (valid.error === null) {
     try {
       const user = await dbHelpers.findBy({ username });
       if (user && bcrypt.compareSync(password, user.password)) {
@@ -50,9 +51,7 @@ router.post("/login", async (req, res, next) => {
     } catch (error) {
       next(responseStatus.serverError);
     }
-  } else {
-    next(responseStatus.badRequest);
   }
-});
+);
 
 module.exports = router;
