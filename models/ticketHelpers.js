@@ -1,5 +1,7 @@
 const db = require("../database/dbConfig");
 const Joi = require("joi");
+const userHelpers = require("./userHelper");
+const categoryHelpers = require("./categoryHelpers");
 
 const ticketSchema = Joi.object().keys({
   title: Joi.string().required(),
@@ -13,13 +15,30 @@ const ticketSchema = Joi.object().keys({
 });
 
 const getTicket = async id => {
-  if (id) {
-    return await db(tickets).where({ id });
+  let query = await db("tickets");
+
+  if (id) query = query.where({ id });
+
+  //   let tickets = await db("tickets as t")
+  //     .join("users", "t.student_id", "users.id")
+  //     .select(
+  //       "t.title",
+  //       "t.description",
+  //       "t.status",
+  //       "users.username as student"
+  //     );
+
+  const tickets = query;
+  for (const ticket of tickets) {
+    const category = await categoryHelpers.getCategoryBy(ticket.id);
+    const student = await userHelpers.getStudentById(ticket.id);
+    const helper = await userHelpers.getHelperbyId(ticket.id);
+    ticket.categories = category.name;
+    ticket.student = student.username;
+    ticket.helper = helper.username;
   }
 
-  const tickets = await db("tickets");
-  
-  return;
+  return tickets;
 };
 
 module.exports = {

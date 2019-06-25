@@ -28,8 +28,8 @@ const loginSchema = Joi.object().keys({
 //get a student by id
 const getStudentById = ticketId => {
   const query = db("users")
-    .join("tickets as t", t.student_id, users.id)
-    .where("t.id", "ticketId")
+    .join("tickets as t", "t.student_id", "users.id")
+    .where("t.id", ticketId)
     .select("username")
     .first();
   return query;
@@ -37,8 +37,8 @@ const getStudentById = ticketId => {
 
 const getHelperbyId = helperId => {
   const query = db("users")
-    .join("tickets as t", t.helper_id, users.id)
-    .where("t.id", "ticketId")
+    .join("tickets as t", "t.helper_id", "users.id")
+    .where("t.id", helperId)
     .select("username")
     .first();
   return query;
@@ -62,7 +62,15 @@ const findBy = async filter => {
 
 //get all users fron database
 const getAllUsers = async () => {
-  return await db("users");
+  return await db("users")
+    .join("roles", "users.role_id", "roles.id")
+    .select(
+      "users.id",
+      "users.email",
+      "users.username",
+      "users.password",
+      "roles.name as role"
+    );
 };
 
 //delete a user
