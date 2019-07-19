@@ -5,6 +5,7 @@ const validRole = require("../middleware/roleCheck");
 
 const dbHelpers = require("../models/userHelper");
 
+//need to put restricted and valid roles
 router.get("/users", async (req, res, next) => {
   try {
     const user = await dbHelpers.getAllUsers();

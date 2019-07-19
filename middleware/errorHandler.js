@@ -1,3 +1,5 @@
+//https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
 const resStatus = require("../config/responseStatuses");
 
 function errorHandler(error, req, res, next) {
@@ -34,6 +36,19 @@ function errorHandler(error, req, res, next) {
         error: "The server can not find requested resource"
       });
       break;
+    case resStatus.requestTimeout: //408
+      res.status(resStatus.requestTimeout).json({
+        statusCode: error,
+        error: "The server would like to shut down this unused connection"
+      });
+      break;
+    case resStatus.gone: //410
+      res.status(resStatus.gone).json({
+        statusCode: error,
+        error:
+          "the requested content has been permanently deleted from server, with no forwarding address"
+      });
+      break;
     case resStatus.typeError: //422
       res.status(resStatus.typeError).json({
         statusCode: error,
@@ -47,7 +62,26 @@ function errorHandler(error, req, res, next) {
         statusCode: error,
         error: `The server has encountered a situation it doesn't know how to handle`
       });
+      break;
+    case resStatus.badGateway: //502
+      res.status(resStatus.badGateway).json({
+        statusCode: error,
+        error: `While working as a gateway to get a response needed to handle the request, got an invalid response.`
+      });
+      break;
 
+    case resStatus.serviceTemporarilyUnavaible: //503
+      res.status(resStatus.serviceTemporarilyUnavaible).json({
+        statusCode: error,
+        error: `The server is not ready to handle the request`
+      });
+      break;
+
+    case resStatus.gatewayTimeout: //504
+      res.status(resStatus.gatewayTimeout).json({
+        statusCode: error,
+        error: `The server is acting as a gateway and cannot get a response in time.`
+      });
       break;
 
     default:

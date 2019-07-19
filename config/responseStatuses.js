@@ -5,12 +5,14 @@ const responseStatus = {
   badCredentials: 401,
   forbiddenAccess: 403,
   notFound: 404,
-  requestTimeout: 408, //
-  gone: 410, //
+  requestTimeout: 408,
+  gone: 410,
   typeError: 422,
   serverError: 500,
-  badGateway: 502, //
-  servideTemporarilyUnavaible
+  notImplemented: 501,
+  badGateway: 502,
+  serviceTemporarilyUnavaible: 503,
+  gatewayTimeout: 504
 };
 
 module.exports = responseStatus;
