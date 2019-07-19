@@ -5,9 +5,9 @@ const validRole = require("../middleware/roleCheck");
 
 const dbHelpers = require("../models/userHelper");
 
-router.get("/users", restricted, validRole([3, 2]), async (req, res, next) => {
+router.get("/users", async (req, res, next) => {
   try {
-    const users = await dbHelpers.getAllUsers();
+    const user = await dbHelpers.getAllUsers();
     res.status(responseStatus.successful).json({ users });
   } catch (error) {
     next(responseStatus.serverError);
