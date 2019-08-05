@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const responseStatus = require("../config/responseStatuses");
+const { responseStatus } = require("error-express-handler");
 const restricted = require("../middleware/restrictedRoute");
 const validRole = require("../middleware/roleCheck");
 const dbHelpers = require("../models/ticketHelpers");
