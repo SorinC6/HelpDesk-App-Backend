@@ -1,6 +1,6 @@
 const expresss = require("express");
-const errorHandler = require("../middleware/errorHandler");
 const globalMiddleware = require("../middleware/globalMiddleware");
+const { errorHandler } = require("error-express-handler");
 
 //routes here
 const userRoutes = require("../routes/user-routes");

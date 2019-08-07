@@ -3,19 +3,19 @@ const bcrypt = require("bcryptjs");
 const dbHelpers = require("../models/userHelper");
 const Joi = require("joi");
 const generateToken = require("../middleware/generateToken");
-const responseStatus = require("../config/responseStatuses");
+const { responseStatus } = require("error-express-handler");
 const schemaValid = require("../middleware/validate");
 
 router.post(
   "/register",
   schemaValid(dbHelpers.userSchema),
-  async (req, res) => {
+  async (req, res, next) => {
     const creds = req.body;
     creds.password = bcrypt.hashSync(creds.password, 12);
 
     try {
       const result = await dbHelpers.registerUser(creds);
-      res.status(responseStatus.successful).json({
+      res.status(200).json({
         id: result.id,
         email: result.email,
         username: result.username,

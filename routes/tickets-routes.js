@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const responseStatus = require("../config/responseStatuses");
+const { responseStatus } = require("error-express-handler");
 const restricted = require("../middleware/restrictedRoute");
 const validRole = require("../middleware/roleCheck");
 const dbHelpers = require("../models/ticketHelpers");
@@ -19,5 +19,20 @@ router.get(
     }
   }
 );
+
+router.post("/tickets", restricted, async (req, res, next) => {
+  const ticket = req.body;
+  try {
+    const [id] = await dbHelpers.addTicket(ticket);
+    if (id) {
+      const newTicket = await dbHelpers.getTicket(id);
+      res.status(responseStatus.successful).json(newTicket);
+    } else {
+      next(responseStatus.notFound);
+    }
+  } catch (error) {
+    next(responseStatus.serverError);
+  }
+});
 
 module.exports = router;

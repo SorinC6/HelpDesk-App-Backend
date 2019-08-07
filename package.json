@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "server": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "reload": "knex migrate:rollback && knex migrate:latest && knex seed:run ",
     "initdb": "knex init",
@@ -38,6 +39,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
+    "error-express-handler": "^1.0.7",
     "express": "^4.17.1",
     "helmet": "^3.18.0",
     "joi": "^14.3.1",

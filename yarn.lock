@@ -643,6 +643,11 @@ encodeurl@~1.0.2:
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
   integrity sha1-rT/0yG7C0CkyL1oCw6mmBslbP1k=
 
+error-express-handler@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/error-express-handler/-/error-express-handler-1.0.7.tgz#e3d4b27727f808247b903c0ba8a01aef3a4ca376"
+  integrity sha512-FQsFohDnkKL18Kfx+uWbULNzBEWM9oM+T5mI+2VOC4zd02JL2e2QxsXbOLjqb6PLh6q1FWVDbUD+mqk6jXNNXA==
+
 escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
