@@ -5,7 +5,6 @@ const validRole = require("../middleware/roleCheck");
 const dbHelpers = require("../models/ticketHelpers");
 const validSchema = require("../middleware/validate");
 
-//POST
 router.get(
   "/tickets",
   restricted,
