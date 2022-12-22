@@ -43,7 +43,7 @@
     "express": "^4.17.1",
     "helmet": "^3.18.0",
     "joi": "^14.3.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "knex": "^0.17.6",
     "sqlite3": "^4.0.9"
   },
